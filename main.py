@@ -1,4 +1,5 @@
 import fastapi
+import analysis
 
 app = fastapi.FastAPI()
 
@@ -6,17 +7,14 @@ app = fastapi.FastAPI()
 def index():
     return {"message": "Hello, world!"}
 
-# Matplotlib: Generate graph and return image link
-@app.get("/api/v1/graph_image")
-def calculate(topic: str):
-    return {"message": "Image."}
-
 # Finds out the most relevant keywords
 @app.get("/api/v1/keywords")
-def keywords(topic: str):
-    return {"message": "Keywords!"}
+def keywords(topic: str, num_words: int = 10):
+    file = open(f"data/{topic}.json", "r")
+    return analysis.count_words(analysis.parse_comments(file.read()), num_words)
 
-# ChatGPT-Summary: Summarizes the Comments and Posts
-@app.get("/api/v1/summary")
-def summary(topic: str):
-    return {"message": "Summary!"}
+# Sentiment Analysis: Finds out the sentiment of the comments
+@app.get("/api/v1/analysis")
+def keywords(topic: str):
+    file = open(f"data/{topic}.json", "r")
+    return analysis.sentiment_analysis(analysis.parse_comments(file.read()))
