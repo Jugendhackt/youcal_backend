@@ -4,15 +4,11 @@ from collections import Counter
 from transformers import pipeline
 
 import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 def parse_comments(comments):
     data = json.loads(comments)
     data = [data[i]['snippet']["textDisplay"] for i in range(len(data)) if len(data[i]['snippet']["textDisplay"]) < 512]
-    max_length = 0
-    for i in data:
-        if len(i) > max_length:
-            max_length = len(i)
-    print(max_length)
     return data
 
 def sentiment_analysis(comments):
@@ -47,9 +43,18 @@ def visualize_data(data):
 
     plt.show()
 
+def wordcloud(comments):
+    data = ""
+    for comment in comments:
+        data += comment
+    wordcloud = WordCloud(width=1600, height=800, max_font_size=200, background_color="white").generate(data)
+    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.show()
+
 if __name__ == "__main__":
-    file = open("data/lanz.json", "r")
+    file = open("data/roblox.json", "r")
     comments = parse_comments(file.read())
-    data = sentiment_analysis(comments)
-    visualize_data(data)
-    data = count_words(comments)
+    #data = sentiment_analysis(comments)
+    #visualize_data(data)
+    #data = count_words(comments)
+    wordcloud(comments)
