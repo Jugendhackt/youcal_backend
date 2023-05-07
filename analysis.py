@@ -1,4 +1,5 @@
 import json
+import random
 
 from collections import Counter
 from transformers import pipeline
@@ -41,7 +42,9 @@ def visualize_data(data):
     ax.set_ylabel('Anzahl der Personen')
     ax.set_title('Sentiment Analysis von YouTube Kommentaren')
 
-    plt.show()
+    path = f'assets/img/sentiment_{random.randint(0, 10000000000)}.png'
+    plt.savefig(path)
+    return path.replace("assets/img/", "")
 
 def wordcloud(comments):
     data = ""
@@ -49,12 +52,14 @@ def wordcloud(comments):
         data += comment
     wordcloud = WordCloud(width=1600, height=800, max_font_size=200, background_color="white").generate(data)
     plt.imshow(wordcloud, interpolation="bilinear")
-    plt.show()
+    path = f'assets/img/wordcloud_{random.randint(0, 10000000000)}.png'
+    plt.savefig(path)
+    return path.replace("assets/img/", "")
 
 if __name__ == "__main__":
     file = open("data/roblox.json", "r")
     comments = parse_comments(file.read())
     #data = sentiment_analysis(comments)
     #visualize_data(data)
-    #data = count_words(comments)
+    data = count_words(comments)
     wordcloud(comments)
