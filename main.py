@@ -2,7 +2,23 @@ import fastapi
 import analysis
 import scraper
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = fastapi.FastAPI()
+
+origins = [
+    '*',
+    '172.22.227.65'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 def index():
